@@ -17,13 +17,20 @@ const Game = () => {
     canvasRef.current.height = 500;
 
     const spawnBulletBasic = () => {
-      const direction = Math.random() * 2 * Math.PI;
+      const direction1 = Math.random() * 2 * Math.PI;
       const bullet = {
-        x: Math.cos(direction) * 249 + 250,
-        y: Math.sin(direction) * 249 + 250,
-        direction: direction,
+        x: Math.cos(direction1) * 249 + 250,
+        y: Math.sin(direction1) * 249 + 250,
+        direction: direction1,
       };
-      bullets.current.push(new Bullet(bullet.x, bullet.y, bullet.direction, 5));
+      bullets.current.push(new Bullet(bullet.x, bullet.y, bullet.direction, 3));
+    };
+
+    const spawnBulletWave1 = () => {
+      const direction2 = (Math.PI * 3) / 2; // Math.floor(Math.random() * 4) * Math.PI;
+      for (let i = 1; i < 5; i++) {
+        bullets.current.push(new Bullet(i * 100, 0, direction2, 3));
+      }
     };
 
     const updateGame = () => {
@@ -72,16 +79,24 @@ const Game = () => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
-    const bulletSpawner = setInterval(spawnBulletBasic, 2000);
+    const bulletSpawner1 = setInterval(
+      spawnBulletBasic,
+      4000 - 500 * Math.log(timeSurvived * 100 + 100)
+    );
+
+    const bulletSpawner2 = setInterval(spawnBulletWave1, 1000);
 
     const timer = setInterval(() => {
       if (!isGameOver) setTimeSurvived((prev) => parseFloat(prev + 0.01, 2));
+      setTimeSurvived((prev) => Math.round(prev * 100) / 100);
     }, 10);
 
     updateGame();
 
     return () => {
-      clearInterval(bulletSpawner);
+      clearInterval(bulletSpawner1);
+      clearInterval(bulletSpawner2);
+
       clearInterval(timer);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
@@ -97,6 +112,7 @@ const Game = () => {
 
   return (
     <div>
+      <div>{timeSurvived}</div>
       <canvas ref={canvasRef} style={{ border: "1px solid black" }}></canvas>
       {isGameOver && (
         <div
