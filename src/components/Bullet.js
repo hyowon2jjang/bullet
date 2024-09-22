@@ -1,12 +1,12 @@
 // src/components/Bullet.js
 class Bullet {
-  constructor(x, y, direction, speed) {
+  constructor(x, y, direction, speed, color, radius) {
     this.x = x;
     this.y = y;
     this.direction = direction;
     this.speed = speed;
-    this.radius = 10;
-    this.color = "red";
+    this.radius = radius;
+    this.color = color;
   }
 
   draw(context) {
@@ -23,7 +23,7 @@ class Bullet {
   }
 
   isInFrame() {
-    return this.x < 0 || this.x > 500 || this.y < 0 || this.y > 500;
+    return this.x < -100 || this.x > 700 || this.y < -100 || this.y > 700;
   }
 }
 
