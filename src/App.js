@@ -1,17 +1,12 @@
-// src/App.js
-import React from "react";
-import Game from "./components/Game";
-import styles from "./App.css";
+import React from 'react';
+import Game from './components/Game'; // Game.js 컴포넌트 가져옴
 
-const App = () => {
+function App() {
   return (
-    <div>
-      <h1 style={{ textAlign: "center" }}>Dodge the Bullets!</h1>
-      <div className={styles["GameBox"]}>
-        <Game />
-      </div>
+    <div className="App">
+      <Game />
     </div>
   );
-};
+}
 
 export default App;
